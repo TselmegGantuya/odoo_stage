@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+    <!-- test -->
+        <record model="ir.ui.view" id="test_tree_view">
+            <field name="name">test.tree</field>
+            <field name="model">lis.test</field>
+            <field name="arch" type="xml">
+                <tree string="Test Tree">
+                    <field name="id"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="test_form_view">
+            <field name="name">test.form</field>
+            <field name="model">lis.test</field>
+            <field name="arch" type="xml">
+                <form string="Test Form">
+                    <sheet>
+                        <group>
+                            <field name="id"/>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="test_list_action">
+            <field name="name">Tests</field>
+            <field name="res_model">lis.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_smiling_face">Create the first Test</p>
+            </field>
+        </record>
+
+        <menuitem id="Tests_menu" name="Tests" parent="lis_menu" action="test_list_action" sequence="4"/>
+    </data>
+</odoo>

@@ -1,0 +1,138 @@
+<odoo>
+    <data>
+    <!-- patient -->
+        <record model="ir.ui.view" id="patient_tree_view">
+            <field name="name">patient.tree</field>
+            <field name="model">lis.patient</field>
+            <field name="arch" type="xml">
+                <tree string="Patient Tree">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="age"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="patient_form_view">
+            <field name="name">patient.form</field>
+            <field name="model">lis.patient</field>
+            <field name="arch" type="xml">
+                <form string="Patient Form">
+                    <sheet>
+                        <group>
+                            <field name="id"/>
+                            <field name="name"/>
+                            <field name="age"/>
+                        </group>
+                        <notebook>
+                            <page>
+                                <field name="order_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- order -->
+        <record model="ir.ui.view" id="order_tree_view">
+            <field name="name">order.tree</field>
+            <field name="model">lis.order</field>
+            <field name="arch" type="xml">
+                <tree string="Order Tree">
+                    <field name="sample_id"/>
+                    <field name="description"/>
+                    <field name="patient_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="order_form_view">
+            <field name="name">order.form</field>
+            <field name="model">lis.order</field>
+            <field name="arch" type="xml">
+                <form string="Order Form">
+                    <sheet>
+                        <group>
+                            <field name="sample_id"/>
+                            <field name="description"/>
+                            <field name="patient_id"/>
+                            <field name="sample_id"/>
+                        </group>
+                        <notebook>
+                            <page>
+                                <field name="result_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- sample -->
+        <record model="ir.ui.view" id="sample_tree_view">
+            <field name="name">sample.tree</field>
+            <field name="model">lis.sample</field>
+            <field name="arch" type="xml">
+                <tree string="Sample Tree">
+                    <field name="volume"/>
+                    <field name="sample_position"/>
+                    <field name="order_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sample_form_view">
+            <field name="name">sample.form</field>
+            <field name="model">lis.sample</field>
+            <field name="arch" type="xml">
+                <form string="Sample Form">
+                    <sheet>
+                        <group>
+                            <field name="volume"/>
+                            <field name="sample_position"/>
+                            <field name="order_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- menu_action -->
+        <record model="ir.actions.act_window" id="patient_list_action">
+            <field name="name">Patients</field>
+            <field name="res_model">lis.patient</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_smiling_face">Create the first Patient</p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="order_list_action">
+            <field name="name">Orders</field>
+            <field name="res_model">lis.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_smiling_face">Create the first Order</p>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="sample_list_action">
+            <field name="name">Samples</field>
+            <field name="res_model">lis.sample</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_smiling_face">Create the first Sample</p>
+            </field>
+        </record>
+        <!-- menu -->
+        <menuitem id="main_lis_menu" name="LIS"/>
+        <menuitem id="lis_menu" name="LIS" parent="main_lis_menu"/>
+        <menuitem id="patients_menu" name="Patients" parent="lis_menu" action="patient_list_action" sequence="1"/>
+        <menuitem id="orders_menu" name="Orders" parent="lis_menu" action="order_list_action" sequence="2"/>
+        <menuitem id="samples_menu" name="Samples" parent="lis_menu" action="sample_list_action" sequence="3"/>
+    </data>
+</odoo>

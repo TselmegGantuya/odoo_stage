@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+    <!-- result -->
+        <record model="ir.ui.view" id="result_tree_view">
+            <field name="name">result.tree</field>
+            <field name="model">lis.result</field>
+            <field name="arch" type="xml">
+                <tree string="Result Tree">
+                    <field name="id"/>
+                    <field name="test_id"/>
+                    <field name="order_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="result_form_view">
+            <field name="name">result.form</field>
+            <field name="model">lis.result</field>
+            <field name="arch" type="xml">
+                <form string="Result Form">
+                    <sheet>
+                        <group>
+                            <field name="id"/>
+                            <field name="test_id"/>
+                            <field name="order_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="result_list_action">
+            <field name="name">Results</field>
+            <field name="res_model">lis.result</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_smiling_face">Create the first Result</p>
+            </field>
+        </record>
+
+        <menuitem id="results_menu" name="Results" parent="lis_menu" action="result_list_action" sequence="5"/>
+    </data>
+</odoo>

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lis_patient,lis.patient,model_lis_patient,,1,1,1,1
+access_lis_order,lis.order,model_lis_order,,1,1,1,1
+access_lis_sample,lis.sample,model_lis_sample,,1,1,1,1
+access_lis_test,lis.test,model_lis_test,,1,1,1,1
+access_lis_result,lis.result,model_lis_result,,1,1,1,1
