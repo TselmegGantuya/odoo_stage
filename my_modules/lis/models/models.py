@@ -10,7 +10,7 @@ class Patient (models.Model):
     name = fields.Char()
     birth_date = fields.Date()
     age = fields.Integer()
-    sex = fields.Selection(selection=["Male", "Female"])
+
 
     order_ids = fields.One2many('lis.order', 'patient_id', string='Order_patient')
 
