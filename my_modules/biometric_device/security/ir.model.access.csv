@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_zk_biometric_device,zk.biometric.device,model_zk_biometric_device,,1,1,1,1
+access_zk_report_daily_attendance,zk.report.daily.attendance,model_zk_report_daily_attendance,,1,1,1,1
+access_zk_machine_attendance,zk.machine.attendance,model_zk_machine_attendance,,1,1,1,1
