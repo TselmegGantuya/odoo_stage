@@ -25,6 +25,7 @@ from odoo import models, fields, api, _
 class ZkMachine(models.Model):
     _name = 'zk.machine.attendance'
     _inherit = 'hr.attendance'
+    _order = 'punching_time asc'
 
     @api.constrains('check_in', 'check_out', 'employee_id')
     def _check_validity(self):
@@ -35,6 +36,8 @@ class ZkMachine(models.Model):
     punch_type = fields.Selection([('0', 'Check In'),
                                    ('1', 'Check Out')],
                                   string='Punching Type')
+    day_period = fields.Selection([('morning', 'Morning'),
+                                   ('afternoon', 'Afternoon')], string='Day period')
 
     attendance_type = fields.Selection([('1', 'Finger'),
                                         ('15', 'Face')], string='Category')

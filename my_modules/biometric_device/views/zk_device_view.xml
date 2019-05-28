@@ -20,6 +20,7 @@
                         <group>
                             <field name="machine_ip" placeholder="Machine IP"/>
                             <field name="port_no"/>
+                            <field name="device_timezone"/>
                         </group>
                     </group>
                 </sheet>

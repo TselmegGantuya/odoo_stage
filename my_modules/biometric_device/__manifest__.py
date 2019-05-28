@@ -6,7 +6,7 @@
         Biometric device module that is meant to connect attendance module and Biometric device""",
 
     'description': """
-        Long description of module's purpose
+        Long description of module's purposesss
     """,
 
     'author': "My Company",
