@@ -8,7 +8,10 @@
                 <header>
                     <button name="download_attendance" type="object" string="Download Data" class="oe_highlight"
                             icon="fa-download " confirm="Are you sure you want to do this?" />
+                    <button name="make_attendance" type="object" string="Make Attendance" class="oe_highlight"
+                            icon="fa-download " confirm="Are you sure you want to do this?" />
                 </header>
+
                 <sheet>
                     <div class="oe_title">
                         <label for="name" />
