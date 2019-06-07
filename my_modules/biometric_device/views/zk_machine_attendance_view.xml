@@ -26,6 +26,22 @@
             </search>
         </field>
     </record>
+    <record id="inherited_hr_attendance_view_pivot" model="ir.ui.view">
+         <field name="name">inherited_hr.attendance.pivot</field>
+         <field name="model">hr.attendance</field>
+         <field name="inherit_id" ref="hr_attendance.hr_attendance_view_pivot"/>
+         <field name="arch" type="xml">
+             <xpath expr='//pivot' position='replace'>
+                 <pivot string="Attendance">
+                     <field name="employee_id" type="row"/>
+                     <field name="attendance_date" interval="day" type="col"/>
+                     <field name="day_period" type="col"/>
+                     <field name="check_in_hour" type="measure" widget="float_time"/>
+                     <field name="check_out_hour" type="measure" widget="float_time"/>
+                 </pivot>
+             </xpath>
+         </field>
+    </record>
         	
     <record id="view_zk_machine_attendance_search" model="ir.ui.view">
         <field name="name">zk.machine.attendance.search</field>
@@ -53,6 +69,7 @@
             </tree>
         </field>
     </record>
+
 
     <record id="action_zk_machine_attendance" model="ir.actions.act_window">
         <field name="name">Attendance Analysis</field>
