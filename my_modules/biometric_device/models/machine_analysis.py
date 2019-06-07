@@ -34,3 +34,4 @@ class ZkMachine(models.Model):
     punching_time = fields.Datetime(string='Punching Time')
 
 
+

@@ -105,8 +105,6 @@ class BiometricDevice(models.Model):
             if atten_hours + time_def < res_company.deny_check_in_time_before or atten_hours + time_def > res_company.deny_check_out_time_after:
                 continue
             atten_dayofweek = atten_time.weekday()
-            if atten_dayofweek == 5 or atten_dayofweek == 6:
-                continue
             atten_date = atten_time.strftime('%Y-%m-%d')
             def_hour = None
             day_period = None
@@ -147,15 +145,22 @@ class BiometricDevice(models.Model):
                     hr_attendance.create({'employee_id': attendance.employee_id.id,
                                           'check_in': atten_time,
                                           'day_period': day_period,
+                                          'attendance_date': atten_date,
+                                          'check_in_hour': self.time_to_float(atten_time) + time_def,
+                                          'check_out_hour': self.time_to_float(datetime.strptime(def_hour, '%H:%M')) + time_def,
                                           'state': 0,
                                           'check_out': atten_date + ' ' + def_hour + ':00'})
                 elif day_period == 'afternoon':
                     hr_attendance.create({'employee_id': attendance.employee_id.id,
                                           'check_in': atten_date + ' ' + def_hour + ':00',
                                           'day_period': day_period,
+                                          'attendance_date': atten_date,
+                                          'check_in_hour': self.time_to_float(datetime.strptime(def_hour, '%H:%M')) + time_def,
+                                          'check_out_hour': self.time_to_float(atten_time) + time_def,
                                           'state': 0,
                                           'check_out': atten_time})
-
+                else:
+                    pass
 
 
 class HrAttendance(models.Model):
@@ -164,8 +169,11 @@ class HrAttendance(models.Model):
     device_user_name = fields.Char(string='Biometric Device User Name')
     day_period = fields.Selection([('morning', 'Morning'),
                                    ('afternoon', 'Afternoon')], string='Day period')
-    state = fields.Selection([(0, 'Auto Input'), (1, 'Manual input'), (2, 'Done'), (3, 'Cancelled')],
+    state = fields.Selection([(0, 'Auto Input'), (1, 'Manual input'), (2, 'Done'), (3, 'Cancelled')], default=0,
                              string='State')
+    attendance_date = fields.Date(string='Date')
+    check_in_hour = fields.Float(string='Check in hour')
+    check_out_hour = fields.Float(string="Check out hour")
 
     @api.onchange('check_in', 'check_out')
     def _onchange_attendance(self):
