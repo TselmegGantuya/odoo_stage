@@ -35,7 +35,6 @@
                  <pivot string="Attendance">
                      <field name="employee_id" type="row"/>
                      <field name="attendance_date" interval="day" type="col"/>
-                     <field name="day_period" type="col"/>
                      <field name="check_in_hour" type="measure" widget="float_time"/>
                      <field name="check_out_hour" type="measure" widget="float_time"/>
                  </pivot>

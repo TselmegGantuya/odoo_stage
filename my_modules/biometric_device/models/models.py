@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
-
 from odoo.exceptions import UserError, ValidationError
 from odoo import models, fields, api
-import pytz
 from datetime import datetime
 import datetime as dt
-import sys
-sys.path.append("zk")
 from zk import ZK, const
 
 
@@ -106,69 +102,54 @@ class BiometricDevice(models.Model):
                 continue
             atten_dayofweek = atten_time.weekday()
             atten_date = atten_time.strftime('%Y-%m-%d')
-            def_hour = None
             day_period = None
+            def_hour = None
             working_hours = attendance.employee_id.resource_calendar_id.attendance_ids
             for working_hour in working_hours:
                 if int(working_hour.dayofweek) == atten_dayofweek:
-                    if working_hour.day_period == "morning" and working_hour.hour_to > atten_hours + time_def:
-                        def_hour = self.float_to_time(working_hour.hour_to - time_def)
-                        day_period = "morning"
-                        break
-                    elif working_hour.day_period == "afternoon" and working_hour.hour_from - time_def < atten_hours:
-                        def_hour = self.float_to_time(working_hour.hour_from - time_def)
-                        day_period = "afternoon"
-                        break
-            prev_atten_ids = None
-
-            if day_period == 'morning':
-                prev_atten_ids = hr_attendance.search(
-                    [('employee_id', '=', attendance.employee_id.id),
-                     ('check_out', '=', atten_date + ' ' + def_hour + ':00'),
-                     ('day_period', '=', day_period)])
-            elif day_period == 'afternoon':
-                prev_atten_ids = hr_attendance.search(
-                    [('employee_id', '=', attendance.employee_id.id),
-                     ('check_in', '=', atten_date + ' ' + def_hour + ':00'),
-                     ('day_period', '=', day_period)])
-            else:
-                continue
+                    if working_hour.day_period == "afternoon":
+                        if atten_hours < working_hour.hour_to - time_def:
+                            def_hour = self.float_to_time(working_hour.hour_to - time_def)
+                            day_period = 'morning'
+                            break
+                        elif atten_hours + time_def > working_hour.hour_from:
+                            def_hour = self.float_to_time(working_hour.hour_from - time_def)
+                            day_period = 'afternoon'
+                            break
+            prev_atten_ids = hr_attendance.search(
+                [('employee_id', '=', attendance.employee_id.id),
+                 ('attendance_date', '=', atten_date)])
             if prev_atten_ids:
-                if day_period == 'morning':
-                    if prev_atten_ids.check_in > atten_time:
-                        prev_atten_ids.write({'check_in': atten_time})
-                elif day_period == 'afternoon':
-                    if prev_atten_ids.check_out < atten_time:
-                        prev_atten_ids.write({'check_out': atten_time})
+                if prev_atten_ids[0].check_in > atten_time:
+                    prev_atten_ids[0].write({'check_in': atten_time,
+                                             'check_in_hour': self.time_to_float(atten_time) + time_def})
+                elif prev_atten_ids[0].check_out < atten_time:
+                    prev_atten_ids[0].write({'check_out': atten_time,
+                                             'check_out_hour': self.time_to_float(atten_time) + time_def})
             else:
                 if day_period == 'morning':
-                    hr_attendance.create({'employee_id': attendance.employee_id.id,
-                                          'check_in': atten_time,
-                                          'day_period': day_period,
-                                          'attendance_date': atten_date,
-                                          'check_in_hour': self.time_to_float(atten_time) + time_def,
-                                          'check_out_hour': self.time_to_float(datetime.strptime(def_hour, '%H:%M')) + time_def,
-                                          'state': 0,
-                                          'check_out': atten_date + ' ' + def_hour + ':00'})
-                elif day_period == 'afternoon':
+                    if self.time_to_float(datetime.strptime(def_hour, '%H:%M')) > self.time_to_float(atten_time):
+                        hr_attendance.create({'employee_id': attendance.employee_id.id,
+                                              'check_in': atten_time,
+                                              'attendance_date': atten_date,
+                                              'check_in_hour': self.time_to_float(atten_time) + time_def,
+                                              'check_out_hour': self.time_to_float(datetime.strptime(def_hour, '%H:%M')) + time_def,
+                                              'state': 0,
+                                              'check_out': atten_date + ' ' + def_hour + ':00'})
+                if day_period == 'afternoon':
                     hr_attendance.create({'employee_id': attendance.employee_id.id,
                                           'check_in': atten_date + ' ' + def_hour + ':00',
-                                          'day_period': day_period,
                                           'attendance_date': atten_date,
                                           'check_in_hour': self.time_to_float(datetime.strptime(def_hour, '%H:%M')) + time_def,
                                           'check_out_hour': self.time_to_float(atten_time) + time_def,
                                           'state': 0,
                                           'check_out': atten_time})
-                else:
-                    pass
 
 
 class HrAttendance(models.Model):
     _inherit = 'hr.attendance'
 
     device_user_name = fields.Char(string='Biometric Device User Name')
-    day_period = fields.Selection([('morning', 'Morning'),
-                                   ('afternoon', 'Afternoon')], string='Day period')
     state = fields.Selection([(0, 'Auto Input'), (1, 'Manual input'), (2, 'Done'), (3, 'Cancelled')], default=0,
                              string='State')
     attendance_date = fields.Date(string='Date')
