@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+<template id="report_attendance_sheet">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <div style="font-size: 18px;font-family:Arial; text-align: center;">
+                        <strong>Attendance Sheet Report</strong>
+                    </div>
+                    <br/><br/>
+
+                    <div style="font-size: 18px;font-family:Arial; text-align: center;">
+                        <strong><span t-esc="docs.name" /></strong>
+                    </div>
+                    <br/><br/>
+
+                    <table class='table table-condensed'>
+                        <tbody>
+                            <tr style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <strong>Late Coming Number of times</strong>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <strong>Late Coming Hours</strong>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <strong>Overtime Number of times</strong>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <strong>Overtime Hours</strong>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <strong>Early Going Number of times</strong>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <strong>Early Going Hours</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <span t-field="docs.total_number_of_late_in"/>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <span t-field="docs.total_late_in"/>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <span t-field="docs.total_number_of_overtime"/>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <span t-field="docs.total_overtime"/>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <span t-field="docs.total_number_of_early_leave"/>
+                                </td>
+                                <td style="font-size: 11px;font-family:Arial;border: 1px solid black; text-align: center;">
+                                    <span t-field="docs.total_early_leave"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th class="text-right">Date</th>
+                                <th class="text-right">Day</th>
+                                <th class="text-right">Planned Sign In</th>
+                                <th class="text-right">Planned Sign Out</th>
+                                <th class="text-right">Actual Sign In</th>
+                                <th class="text-right">Actual Sign Out</th>
+                                <th class="text-right">Late In</th>
+                                <th class="text-right">Overtime</th>
+                                <th class="text-right">Late Out</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach = "docs.sheet_detail_ids" t-as="line">
+                                <td class="text-right" style="white-space: text-nowrap;">
+                                    <span t-esc="line.date" />
+                                </td>
+                                <td class="text-right" style="white-space: text-nowrap;">
+                                    <span t-esc="line.day" />
+                                </td>
+                                <td class="text-right" style="white-space: text-nowrap;">
+                                    <span t-esc="line.planned_sign_in" />
+                                </td>
+                                <td class="text-right" style="white-space: text-nowrap;">
+                                    <span t-esc="line.planned_sign_out" />
+                                </td>
+                                <td class="text-right" style="white-space: text-nowrap;">
+                                    <span t-esc="line.actual_sign_in" />
+                                </td>
+                                <td class="text-right" style="white-space: text-nowrap;">
+                                    <span t-esc="line.actual_sign_out" />
+                                </td>
+                                <td class="text-right" style="white-space: text-nowrap;">
+                                    <span t-esc="line.late_in" />
+                                </td>
+                                <td class="text-right" style="white-space: text-nowrap;">
+                                    <span t-esc="line.overtime" />
+                                </td>
+                                <td class="text-right" style="white-space: text-nowrap;">
+                                    <span t-esc="line.early_leave" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+<record id="paperformat_attendance_sheet" model="report.paperformat">
+    <field name="name">Attendance Sheet</field>
+    <field name="format">A4</field>
+    <field name="orientation">Landscape</field>
+    <field name="margin_top">40</field>
+    <field name="margin_bottom">23</field>
+    <field name="margin_left">7</field>
+    <field name="margin_right">7</field>
+    <field name="header_line" eval="False" />
+    <field name="header_spacing">35</field>
+    <field name="dpi">90</field>
+</record>
+
+<record id="action_report_attendance_sheet" model="ir.actions.report">
+    <field name="paperformat_id" ref="abs_hr_attendance_sheet.paperformat_attendance_sheet"/>
+</record>
+
+   </data>
+</odoo>

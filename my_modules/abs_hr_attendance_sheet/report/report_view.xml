@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+            string="Attendance Sheet"
+            id="action_report_attendance_sheet"
+            model="employee.attendace.sheet"
+            report_type="qweb-pdf"
+            name="abs_hr_attendance_sheet.report_attendance_sheet"
+            file="abs_hr_attendance_sheet.report_attendance_sheet"
+        />
+
+    </data>
+</odoo>
