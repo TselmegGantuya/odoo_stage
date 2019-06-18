@@ -4,33 +4,46 @@ from odoo.exceptions import UserError, ValidationError
 from odoo import models, fields, api
 from datetime import datetime
 import datetime as dt
-from zk import ZK, const
+from .zk import ZK, const
 
 
 class BiometricDevice(models.Model):
     _name = 'zk.biometric.device'
+    _description = "Model for interacting with the biometric device attendance"
 
     name = fields.Char(string='Name', required=True)
     machine_ip = fields.Char(string='Machine IP', required=True)
     port_no = fields.Integer(string='Port No', required=True)
     device_timezone = fields.Integer(string='Device Timezone', required=True)
 
+    '''
+    Function used to connect with device
+    This way we can only create a ZK object in a single place
+    '''
     @api.multi
     def device_connect(self):
-
         zk = ZK(self.machine_ip, port=self.port_no, timeout=5, password=0, force_udp=False, ommit_ping=False)
         print('Connecting to device ...')
         conn = zk.connect()
         return conn
 
+    '''
+        Function used to convert float to string in format of H:M
+    '''
     @api.multi
     def float_to_time(self, time):
         return '{0:02.0f}:{1:02.0f}'.format(*divmod(time * 60, 60))
 
+    '''
+        Function used to datetime to float
+    '''
     @api.multi
     def time_to_float(self, time):
         return int(time.strftime("%H")) + int(time.strftime("%M")) / 60.0
 
+    '''
+        Function used to clean all the data from biometric device
+    '''
     @api.multi
     def clean_attendance(self):
         self.download_attendance()
@@ -41,6 +54,10 @@ class BiometricDevice(models.Model):
             conn.clear_attendance()
             conn.enable_device()
 
+    '''
+        Function used to download all attendances data to attendance log
+        This way was used so that we can put attendances data in attendance log from multiple sources(Downlaod, Import)
+    '''
     @api.multi
     def download_attendance(self):
         zk_attendance = self.env['zk.machine.attendance']
@@ -79,6 +96,9 @@ class BiometricDevice(models.Model):
                         pass
             conn.enable_device()
 
+    '''
+        Function used to create new attendance record based on attendance logs
+    '''
     def make_attendance(self):
         zk_attendance = self.env['zk.machine.attendance']
         hr_attendance = self.env['hr.attendance']
@@ -149,6 +169,7 @@ class BiometricDevice(models.Model):
 class HrAttendance(models.Model):
     _inherit = 'hr.attendance'
 
+    department_id = fields.Many2one('hr.department', string="Department")
     device_user_name = fields.Char(string='Biometric Device User Name')
     state = fields.Selection([(0, 'Auto Input'), (1, 'Manual input'), (2, 'Done'), (3, 'Cancelled')], default=0,
                              string='State')

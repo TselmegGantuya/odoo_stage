@@ -10,6 +10,8 @@
                             icon="fa-download " confirm="Are you sure you want to do this?" />
                     <button name="make_attendance" type="object" string="Make Attendance" class="oe_highlight"
                             icon="fa-download " confirm="Are you sure you want to do this?" />
+                    <button name="clean_attendance" type="object" string="Delete data" class="oe_highlight"
+                            icon="fa-download " confirm="Are you sure you want to do this?" />
                 </header>
 
                 <sheet>
@@ -57,6 +59,18 @@
         <field name="arch" type="xml">
             <field name="user_id" position="after">
                 <field name="device_user_name"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="res_company_inherit_form_view" model="ir.ui.view">
+        <field name="name">res.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="email" position="after">
+                <field name="deny_check_in_time_before" widget="float_time"/>
+                <field name="deny_check_out_time_after" widget="float_time"/>
             </field>
         </field>
     </record>

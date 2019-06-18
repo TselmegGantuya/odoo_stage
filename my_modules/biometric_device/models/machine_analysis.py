@@ -25,6 +25,7 @@ from odoo import models, fields, api, _
 class ZkMachine(models.Model):
     _name = 'zk.machine.attendance'
     _order = 'punching_time asc'
+    _description = "Model for saving the biometric device attendance on the application"
 
     employee_id = fields.Many2one('hr.employee', string="Employee", ondelete='cascade', index=True)
     device_user_name = fields.Char(string='Biometric Device User Name')

@@ -31,3 +31,12 @@ For a standard installation please follow the <a href="https://www.odoo.com/docu
 from the documentation.
 
 Then follow <a href="https://www.odoo.com/documentation/master/tutorials.html">the developer tutorials</a>
+
+For Using the Biometric Device Module 
+-------------------------
+
+Before using must configure:
+ 
+ - in the Settings -> Company configure Deny Check in before decided time and Deny Check out after decided time
+ - in the Employees give each employee Biometric Device User Name according to user name on the biometric device
+ - in the Attendances -> Biometric Manager give each device Timezone
